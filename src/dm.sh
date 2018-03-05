@@ -8,51 +8,27 @@ if [ -z "${LOGFILE:-}" ] ; then
   exit 1
 fi
 
-slim_setup()
-{
-  if [ -f ${BASEDIR}/usr/local/etc/slim.conf ] ; then
-    sed -i '' -e "s/#auto_login          no/auto_login          yes/g"\
-    -e  "s/#default_user        simone/default_user        ghostbsd/g" \
-    ${BASEDIR}/usr/local/etc/slim.conf
-    echo 'sessiondir       /usr/local/share/xsessions/' >> ${BASEDIR}/usr/local/etc/slim.conf
-  fi
-  echo 'slim_enable="YES"' >> ${BASEDIR}/etc/rc.conf
-}
-
 lightdm_setup()
 {
-#  if [ -f ${BASEDIR}/usr/local/etc/lightdm/lightdm.conf ] ; then
-#    sed -i "" '/#exit-on-failure=false/a\
-#autologin-user=ghostbsd\
-#autologin-user-timeout=0\
-#' ${BASEDIR}/usr/local/etc/lightdm/lightdm.conf
-#  fi
+  if [ -f /usr/local/etc/lightdm/lightdm.conf ] ; then
+    sed -i "" '/#exit-on-failure=false/a\
+autologin-user=liveuser\
+autologin-user-timeout=0\
+' /usr/local/etc/lightdm/lightdm.conf
+  fi
 
-#  if [ -f ${BASEDIR}/usr/local/etc/lightdm/lightdm-gtk-greeter.conf ] ; then
-#    echo "background=/usr/local/share/backgrounds/ghostbsd/White-Trees-Empire.jpg" >> ${BASEDIR}/usr/local/etc/lightdm/lightdm-gtk-greeter.conf
-#    echo "user-background=true" >> ${BASEDIR}/usr/local/etc/lightdm/lightdm-gtk-greeter.conf
-#    #echo "theme-name=Ambiance-Blackout-Flat-Aqua" >> ${BASEDIR}/usr/local/etc/lightdm/lightdm-gtk-greeter.conf
-#    #echo "icon-theme-name=Vivacious-Colors-Full-Dark" >> ${BASEDIR}/usr/local/etc/lightdm/lightdm-gtk-greeter.conf
-#  fi
-  echo '#lightdm_enable="NO"' >> ${BASEDIR}/etc/rc.conf
+  if [ -f /usr/local/etc/lightdm/lightdm-gtk-greeter.conf ] ; then
+    echo "background=/usr/local/share/backgrounds/ghostbsd/White-Trees-Empire.jpg" >> /usr/local/etc/lightdm/lightdm-gtk-greeter.conf
+    echo "user-background=true" >> /usr/local/etc/lightdm/lightdm-gtk-greeter.conf
+    #echo "theme-name=Ambiance-Blackout-Flat-Aqua" >> /usr/local/etc/lightdm/lightdm-gtk-greeter.conf
+    #echo "icon-theme-name=Vivacious-Colors-Full-Dark" >> /usr/local/etc/lightdm/lightdm-gtk-greeter.conf
+  fi
+  #echo '#lightdm_enable="NO"' >> /etc/rc.conf
 }
 
 gdm_setup()
 {
-  echo 'gdm_enable="YES"' >> ${BASEDIR}/etc/rc.conf
+  echo 'gdm_enable="YES"' >> /etc/rc.conf
 }
 
-case "${PACK_PROFILE}" in
-  mate)
-    lightdm_setup
-    ;;
-  xfce)
-    # lightdm_setup
-    lightdm_setup
-    ;;
-  gnome)
-    gdm_setup
-    ;;
-  *)
-    ;;
-esac
+lightdm_setup

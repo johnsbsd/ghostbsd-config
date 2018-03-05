@@ -2,40 +2,40 @@
 
 base_overrides()
 {
-  cp -R extra/common-base-setting/override/* ${BASEDIR}/
+  cp -R src/common-base-setting/override/* /
 }
 
 
 patch_etc_files()
 {
-  cat extra/common-base-setting/patches/boot/loader.conf.extra >> ${BASEDIR}/boot/loader.conf
-  cat extra/common-base-setting/patches/etc/profile.extra >> ${BASEDIR}/etc/profile
-  cat extra/common-base-setting/patches/etc/devfs.rules.extra >> ${BASEDIR}/etc/devfs.rules
-  cat extra/common-base-setting/patches/etc/make.conf.extra >> ${BASEDIR}/etc/make.conf
-  cat extra/common-base-setting/patches/etc/rc.conf.extra >> ${BASEDIR}/etc/rc.conf
-  cat extra/common-base-setting/patches/etc/devd.conf.extra >> ${BASEDIR}/etc/devd.conf
-  cat extra/common-base-setting/patches/etc/sysctl.conf.extra >> ${BASEDIR}/etc/sysctl.conf
-  cat extra/common-base-setting/patches/etc/fstab.extra >> ${BASEDIR}/etc/fstab
+  cat src/common-base-setting/patches/boot/loader.conf.src >> /boot/loader.conf
+  cat src/common-base-setting/patches/etc/profile.src >> /etc/profile
+  cat src/common-base-setting/patches/etc/devfs.rules.src >> /etc/devfs.rules
+  cat src/common-base-setting/patches/etc/make.conf.src >> /etc/make.conf
+  cat src/common-base-setting/patches/etc/rc.conf.src >> /etc/rc.conf
+  cat src/common-base-setting/patches/etc/devd.conf.src >> /etc/devd.conf
+  cat src/common-base-setting/patches/etc/sysctl.conf.src >> /etc/sysctl.conf
+  cat src/common-base-setting/patches/etc/fstab.src >> /etc/fstab
 }
 
 local_files()
 {
-  # cp extra/common-base-setting/etc/grub.d/10_kghostbsd ${BASEDIR}/usr/local/etc/grub.d/10_kghostbsd
-  #sed -i "" -e 's/"\/usr\/local\/sbin\/beadm"/"\/usr\/local\/etc\/grub.d\/10_kghostbsd"/g' ${BASEDIR}/usr/local/etc/grub.d/10_kfreebsd
+  # cp src/common-base-setting/etc/grub.d/10_kghostbsd /usr/local/etc/grub.d/10_kghostbsd
+  #sed -i "" -e 's/"\/usr\/local\/sbin\/beadm"/"\/usr\/local\/etc\/grub.d\/10_kghostbsd"/g' /usr/local/etc/grub.d/10_kfreebsd
   # Adding kern.vty=vt to 10_kfreebsd
   sed -i '' '/set kFreeBSD.vfs.root.mountfrom.options=rw/a\
 \	set kFreeBSD.kern.vty=vt\
 \	set kFreeBSD.hw.psm.synaptics_support="1"\
-' ${BASEDIR}/usr/local/etc/grub.d/10_kfreebsd
+' /usr/local/etc/grub.d/10_kfreebsd
   # Replassing FreeBSD by GhostBSD
-  sed -i '' 's/"FreeBSD"/"GhostBSD"/g' ${BASEDIR}/usr/local/etc/grub.d/10_kfreebsd
+  sed -i '' 's/"FreeBSD"/"GhostBSD"/g' /usr/local/etc/grub.d/10_kfreebsd
 }
 
 packages_settings()
 {
   #set htmlview alternative to firefox for cups
-  if [ -e ${BASEDIR}/usr/local/bin/firefox ] ; then
-    update-alternatives --altdir ${BASEDIR}/usr/local/etc/alternatives --install ${BASEDIR}/usr/local/bin/htmlview htmlview ${BASEDIR}/usr/local/bin/firefox 50
+  if [ -e /usr/local/bin/firefox ] ; then
+    update-alternatives --altdir /usr/local/etc/alternatives --install /usr/local/bin/htmlview htmlview /usr/local/bin/firefox 50
   fi
 }
 

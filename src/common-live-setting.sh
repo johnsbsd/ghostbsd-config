@@ -8,31 +8,31 @@ if [ -z "${LOGFILE:-}" ] ; then
   exit 1
 fi
 
-mkdir -p ${BASELOCALDIR}/share/ghostbsd
-cp -R extra/common-live-settings ${BASELOCALDIR}/share/ghostbsd
+mkdir -p /usr/local/share/ghostbsd
+cp -R src/common-live-settings /usr/local/share/ghostbsd
 
 
 backup_freebsd()
 {
   # backup files from etc
-  for tocopy in $(ls ${BASELOCALDIR}/share/ghostbsd/common-live-settings/base/override/etc/rc.d) ; do
-    if [ -f ${BASEDIR}/etc/rc.d/$tocopy ]; then
-      cp -Rf ${BASEDIR}/etc/rc.d/$tocopy ${BASELOCALDIR}/share/ghostbsd/common-live-settings/base/backup/etc/rc.d/
+  for tocopy in $(ls /usr/local/share/ghostbsd/common-live-settings/base/override/etc/rc.d) ; do
+    if [ -f /etc/rc.d/$tocopy ]; then
+      cp -Rf /etc/rc.d/$tocopy /usr/local/share/ghostbsd/common-live-settings/base/backup/etc/rc.d/
     fi
   done
 }
 
 freebsd_overrides()
 {
-  cp -Rf ${BASEDIR}/usr/local/share/ghostbsd/common-live-settings/base/override/root/* ${BASEDIR}/root
-  cp -Rf ${BASEDIR}/usr/local/share/ghostbsd/common-live-settings/base/override/etc/* ${BASEDIR}/etc
+  cp -Rf /usr/local/share/ghostbsd/common-live-settings/base/override/root/* /root
+  cp -Rf /usr/local/share/ghostbsd/common-live-settings/base/override/etc/* /etc
   # rebuild login database because one override was login.conf
-  chroot ${BASEDIR} cap_mkdb /etc/login.conf
+  chroot  cap_mkdb /etc/login.conf
 }
 
 copy_files_in()
 {
-  cp -Rf ${BASEDIR}/usr/local/share/ghostbsd/common-live-settings/etc/* ${BASEDIR}/etc
+  cp -Rf /usr/local/share/ghostbsd/common-live-settings/etc/* /etc
 }
 
 
